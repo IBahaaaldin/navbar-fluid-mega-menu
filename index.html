@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fluid Morphing Mega-Menu Navbar • Ready-UIs</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+
+    /* Morphing Dropdown Container */
+    .dropdown-container {
+      transition: width 320ms cubic-bezier(0.16, 1, 0.3, 1),
+                  height 320ms cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 320ms cubic-bezier(0.16, 1, 0.3, 1),
+                  opacity 220ms ease,
+                  visibility 220ms;
+      will-change: transform, width, height;
+    }
+
+    /* Morphing Arrow Indicator */
+    .dropdown-arrow {
+      transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1), opacity 200ms ease;
+      will-change: transform;
+    }
+
+    /* Dropdown Section Cross-Fade & Slide */
+    .dropdown-section {
+      transition: opacity 240ms cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 240ms cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform, opacity;
+    }
+
+    /* Subtle custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(150, 150, 150, 0.2);
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="bg-black text-white min-h-screen flex items-center justify-center p-4 selection:bg-indigo-500/30 selection:text-indigo-200">
+
+  <!-- Main Centered Wrapper -->
+  <div class="w-full max-w-5xl flex flex-col items-center relative py-12">
+
+    <!-- DESKTOP NAVBAR CONTAINER -->
+    <header id="navHeader" class="hidden md:block relative z-50">
+      <nav id="navbarRoot" class="flex items-center gap-1.5 px-3 py-2 rounded-full border border-neutral-200/80 dark:border-white/10 bg-white/90 dark:bg-neutral-950/80 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.12)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.8)] transition-all duration-300">
+        
+        <!-- Brand / Creator Badge (Single Row Guaranteed) -->
+        <a href="#home" class="flex items-center gap-2.5 pl-2 pr-3 py-1.5 rounded-full hover:bg-neutral-100 dark:hover:bg-white/5 transition-all group whitespace-nowrap">
+          <div class="relative w-7 h-7 rounded-full bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 p-[1.5px] shadow-sm">
+            <div class="w-full h-full rounded-full bg-white dark:bg-neutral-950 flex items-center justify-center">
+              <span class="text-[11px] font-bold tracking-tight text-neutral-900 dark:text-white group-hover:scale-110 transition-transform">BM</span>
+            </div>
+            <span class="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 border-2 border-white dark:border-neutral-950"></span>
+          </div>
+          <div class="flex flex-col text-left">
+            <span class="text-xs font-semibold text-neutral-900 dark:text-neutral-100 group-hover:text-indigo-600 dark:group-hover:text-white transition-colors tracking-tight whitespace-nowrap">Bahaa Mohammed</span>
+            <span class="text-[10px] text-neutral-500 dark:text-neutral-400 font-medium tracking-tight whitespace-nowrap">Senior Frontend</span>
+          </div>
+        </a>
+
+        <!-- Separator -->
+        <div class="h-4 w-px bg-neutral-200 dark:bg-white/10 mx-1"></div>
+
+        <!-- Navigation Tabs (Triggers for Morphing Dropdown) -->
+        <div id="navTabsContainer" class="flex items-center gap-0.5">
+          
+          <!-- Tab 1: Products -->
+          <button data-tab="products" class="nav-tab relative px-3 py-1.5 rounded-full text-xs font-medium text-neutral-600 dark:text-neutral-300 hover:text-neutral-950 dark:hover:text-white transition-colors flex items-center gap-1 group whitespace-nowrap">
+            <span>Products</span>
+            <svg class="w-3 h-3 text-neutral-400 group-hover:text-neutral-950 dark:group-hover:text-white transition-transform group-hover:translate-y-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          <!-- Tab 2: Solutions -->
+          <button data-tab="solutions" class="nav-tab relative px-3 py-1.5 rounded-full text-xs font-medium text-neutral-600 dark:text-neutral-300 hover:text-neutral-950 dark:hover:text-white transition-colors flex items-center gap-1 group whitespace-nowrap">
+            <span>Solutions</span>
+            <svg class="w-3 h-3 text-neutral-400 group-hover:text-neutral-950 dark:group-hover:text-white transition-transform group-hover:translate-y-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          <!-- Tab 3: Resources -->
+          <button data-tab="resources" class="nav-tab relative px-3 py-1.5 rounded-full text-xs font-medium text-neutral-600 dark:text-neutral-300 hover:text-neutral-950 dark:hover:text-white transition-colors flex items-center gap-1 group whitespace-nowrap">
+            <span>Resources</span>
+            <svg class="w-3 h-3 text-neutral-400 group-hover:text-neutral-950 dark:group-hover:text-white transition-transform group-hover:translate-y-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          <!-- Tab 4: Direct Link (No dropdown) -->
+          <a href="#pricing" class="px-3 py-1.5 rounded-full text-xs font-medium text-neutral-600 dark:text-neutral-300 hover:text-neutral-950 dark:hover:text-white transition-colors whitespace-nowrap">
+            Pricing
+          </a>
+        </div>
+
+        <!-- Separator -->
+        <div class="h-4 w-px bg-neutral-200 dark:bg-white/10 mx-1"></div>
+
+        <!-- Right Side Actions -->
+        <div class="flex items-center gap-2 pl-1 pr-1">
+          <!-- Contact Link -->
+          <a href="#contact" class="px-2.5 py-1.5 text-xs font-medium text-neutral-600 dark:text-neutral-300 hover:text-neutral-950 dark:hover:text-white transition-colors whitespace-nowrap">
+            Sign In
+          </a>
+
+          <!-- Primary CTA Button -->
+          <a href="#get-started" class="relative group overflow-hidden px-3.5 py-1.5 rounded-full bg-gradient-to-r from-indigo-500 via-indigo-600 to-purple-600 text-xs font-semibold text-white shadow-md shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all whitespace-nowrap flex items-center gap-1.5">
+            <span class="relative z-10">Get Started</span>
+            <svg class="w-3 h-3 relative z-10 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+            <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+          </a>
+
+          <!-- Theme Toggle Button -->
+          <button id="themeToggle" class="p-2 rounded-full text-neutral-500 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-white/5 active:scale-90 transition-all focus:outline-none" title="Toggle Dark/Light Mode">
+            <!-- Sun Icon (in Dark Mode) -->
+            <svg id="sunIcon" class="w-3.5 h-3.5 block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <circle cx="12" cy="12" r="5" stroke-width="2"></circle>
+              <line x1="12" y1="1" x2="12" y2="3" stroke-width="2" stroke-linecap="round"></line>
+              <line x1="12" y1="21" x2="12" y2="23" stroke-width="2" stroke-linecap="round"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke-width="2" stroke-linecap="round"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke-width="2" stroke-linecap="round"></line>
+              <line x1="1" y1="12" x2="3" y2="12" stroke-width="2" stroke-linecap="round"></line>
+              <line x1="21" y1="12" x2="23" y2="12" stroke-width="2" stroke-linecap="round"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke-width="2" stroke-linecap="round"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke-width="2" stroke-linecap="round"></line>
+            </svg>
+            <!-- Moon Icon (in Light Mode) -->
+            <svg id="moonIcon" class="w-3.5 h-3.5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+        </div>
+      </nav>
+
+      <!-- FLUID MORPHING DROPDOWN CONTAINER (ABSOLUTE FLOATING) -->
+      <div id="dropdownWrapper" class="absolute top-[calc(100%+14px)] left-0 pointer-events-none opacity-0 transition-opacity duration-200">
+        
+        <!-- Sliding Top Triangle Arrow -->
+        <div id="dropdownArrow" class="dropdown-arrow absolute -top-1.5 left-0 w-3 h-3 bg-white dark:bg-neutral-900 border-t border-l border-neutral-200 dark:border-white/15 rotate-45 z-20 pointer-events-none"></div>
+
+        <!-- The Morphing Backdrop Shell -->
+        <div id="dropdownContainer" class="dropdown-container relative rounded-2xl border border-neutral-200/80 dark:border-white/15 bg-white/95 dark:bg-neutral-950/90 backdrop-blur-2xl shadow-[0_30px_70px_rgba(0,0,0,0.15)] dark:shadow-[0_30px_70px_rgba(0,0,0,0.65)] overflow-hidden pointer-events-auto">
+          
+          <!-- Content Shelf (Holder for tab views) -->
+          <div id="dropdownContentShelf" class="relative w-full h-full">
+
+            <!-- 1. PRODUCTS SECTION -->
+            <div id="section-products" class="dropdown-section absolute inset-0 p-6 opacity-0 pointer-events-none">
+              <div class="grid grid-cols-12 gap-6 h-full">
+                <!-- Left: Product List (8 Cols) -->
+                <div class="col-span-8 flex flex-col justify-between">
+                  <div class="flex items-center justify-between pb-3 border-b border-neutral-200/80 dark:border-white/10 mb-3">
+                    <span class="text-[11px] font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider whitespace-nowrap">Core Platforms</span>
+                    <span class="text-[11px] font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 cursor-pointer whitespace-nowrap">View Architecture &rarr;</span>
+                  </div>
+                  
+                  <div class="grid grid-cols-2 gap-3.5">
+                    <!-- Item 1 -->
+                    <a href="#" class="group/item flex items-start gap-3 p-2 rounded-xl hover:bg-neutral-100 dark:hover:bg-white/5 transition-colors">
+                      <div class="w-8 h-8 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0 group-hover/item:scale-105 group-hover/item:bg-indigo-600 group-hover/item:text-white transition-all">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                      </div>
+                      <div class="flex flex-col">
+                        <div class="flex items-center gap-1.5">
+                          <span class="text-xs font-semibold text-neutral-900 dark:text-neutral-100 group-hover/item:text-indigo-600 dark:group-hover/item:text-indigo-400 transition-colors whitespace-nowrap">Edge AI Engine</span>
+                          <span class="text-[9px] px-1.5 py-0.5 rounded-full bg-indigo-500/15 text-indigo-700 dark:text-indigo-300 font-semibold uppercase tracking-wider">v2.4</span>
+                        </div>
+                        <span class="text-[11px] text-neutral-500 dark:text-neutral-400 leading-snug mt-0.5">Real-time sub-10ms neural inferencing across global edge.</span>
+                      </div>
+                    </a>
+
+                    <!-- Item 2 -->
+                    <a href="#" class="group/item flex items-start gap-3 p-2 rounded-xl hover:bg-neutral-100 dark:hover:bg-white/5 transition-colors">
+                      <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 group-hover/item:scale-105 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/>
+                        </svg>
+                      </div>
+                      <div class="flex flex-col">
+                        <div class="flex items-center gap-1.5">
+                          <span class="text-xs font-semibold text-neutral-900 dark:text-neutral-100 group-hover/item:text-emerald-600 dark:group-hover/item:text-emerald-400 transition-colors whitespace-nowrap">Vector Mesh DB</span>
+                        </div>
+                        <span class="text-[11px] text-neutral-500 dark:text-neutral-400 leading-snug mt-0.5">Distributed semantic embeddings with HNSW clustering.</span>
+                      </div>
+                    </a>
+
+                    <!-- Item 3 -->
+                    <a href="#" class="group/item flex items-start gap-3 p-2 rounded-xl hover:bg-neutral-100 dark:hover:bg-white/5 transition-colors">
+                      <div class="w-8 h-8 rounded-lg bg-sky-500/10 border border-sky-500/20 text-sky-600 dark:text-sky-400 flex items-center justify-center shrink-0 group-hover/item:scale-105 group-hover/item:bg-sky-600 group-hover/item:text-white transition-all">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                      </div>
+                      <div class="flex flex-col">
+                        <div class="flex items-center gap-1.5">
+                          <span class="text-xs font-semibold text-neutral-900 dark:text-neutral-100 group-hover/item:text-sky-600 dark:group-hover/item:text-sky-400 transition-colors whitespace-nowrap">Zero-Trust Auth</span>
+                        </div>
+                        <span class="text-[11px] text-neutral-500 dark:text-neutral-400 leading-snug mt-0.5">Passkeys, biometric OAuth and signed sessions.</span>
+                      </div>
+                    </a>
+
+                    <!-- Item 4 -->
+                    <a href="#" class="group/item flex items-start gap-3 p-2 rounded-xl hover:bg-neutral-100 dark:hover:bg-white/5 transition-colors">
+                      <div class="w-8 h-8 rounded-lg bg-purple-500/10 border border-purple-500/20 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0 group-hover/item:scale-105 group-hover/item:bg-purple-600 group-hover/item:text-white transition-all">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                      </div>
+                      <div class="flex flex-col">
+                        <div class="flex items-center gap-1.5">
+                          <span class="text-xs font-semibold text-neutral-900 dark:text-neutral-100 group-hover/item:text-purple-600 dark:group-hover/item:text-purple-400 transition-colors whitespace-nowrap">Telemetry Radar</span>
+                        </div>
+                        <span class="text-[11px] text-neutral-500 dark:text-neutral-400 leading-snug mt-0.5">High-cardinality metrics, tracing & error root-cause analytics.</span>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+
+                <!-- Right: Featured Card (4 Cols) -->
+                <div class="col-span-4 rounded-xl bg-gradient-to-b from-neutral-100 to-neutral-50 dark:from-white/[0.07] dark:to-white/[0.02] border border-neutral-200/80 dark:border-white/10 p-4 flex flex-col justify-between">
+                  <div>
+                    <span class="text-[10px] font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider block mb-1">Spotlight Release</span>
+                    <h4 class="text-xs font-semibold text-neutral-900 dark:text-white">Universal SDK v3</h4>
+                    <p class="text-[11px] text-neutral-500 dark:text-neutral-400 mt-1 leading-relaxed">Ship across Next.js, Flutter, and Swift with unified reactive state.</p>
+                  </div>
+                  <div class="mt-4 pt-3 border-t border-neutral-200/80 dark:border-white/10 flex items-center justify-between">
+                    <span class="text-[10px] text-neutral-500 dark:text-neutral-400 font-mono">npm i @ready/sdk</span>
+                    <span class="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 cursor-pointer">Explore &rarr;</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. SOLUTIONS SECTION -->
+            <div id="section-solutions" class="dropdown-section absolute inset-0 p-6 opacity-0 pointer-events-none">
+              <div class="grid grid-cols-12 gap-6 h-full">
+                <!-- Left: Industries (7 Cols) -->
+                <div class="col-span-7 flex flex-col justify-between">
+                  <div class="flex items-center justify-between pb-3 border-b border-neutral-200/80 dark:border-white/10 mb-3">
+                    <span class="text-[11px] font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider whitespace-nowrap">By Use Case</span>
+                    <span class="text-[11px] font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 dark:hover:text-emerald-300 cursor-pointer whitespace-nowrap">All Solutions &rarr;</span>
+                  </div>
+
+                  <div class="space-y-2.5">
+                    <a href="#" class="group/sol flex items-center justify-between p-2 rounded-xl hover:bg-neutral-100 dark:hover:bg-white/5 transition-colors">
+                      <div class="flex items-center gap-3">
+                        <div class="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                          </svg>
+                        </div>
+                        <div class="flex flex-col">
+                          <span class="text-xs font-semibold text-neutral-900 dark:text-neutral-100 group-hover/sol:text-emerald-600 dark:group-hover/sol:text-emerald-400 transition-colors whitespace-nowrap">Fintech & Payments</span>
+                          <span class="text-[10px] text-neutral-500 dark:text-neutral-400">Sub-second transaction clearing & ISO compliance.</span>
+                        </div>
+                      </div>
+                      <svg class="w-3.5 h-3.5 text-neutral-400 group-hover/sol:text-neutral-900 dark:group-hover/sol:text-white group-hover/sol:translate-x-1 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                      </svg>
+                    </a>
+
+                    <a href="#" class="group/sol flex items-center justify-between p-2 rounded-xl hover:bg-neutral-100 dark:hover:bg-white/5 transition-colors">
+                      <div class="flex items-center gap-3">
+                        <div class="w-7 h-7 rounded-lg bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center">
+                          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                          </svg>
+                        </div>
+                        <div class="flex flex-col">
+                          <span class="text-xs font-semibold text-neutral-900 dark:text-neutral-100 group-hover/sol:text-cyan-600 dark:group-hover/sol:text-cyan-400 transition-colors whitespace-nowrap">Autonomous AI Agents</span>
+                          <span class="text-[10px] text-neutral-500 dark:text-neutral-400">Multi-agent orchestrations with persistent memory.</span>
+                        </div>
+                      </div>
+                      <svg class="w-3.5 h-3.5 text-neutral-400 group-hover/sol:text-neutral-900 dark:group-hover/sol:text-white group-hover/sol:translate-x-1 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                      </svg>
+                    </a>
+
+                    <a href="#" class="group/sol flex items-center justify-between p-2 rounded-xl hover:bg-neutral-100 dark:hover:bg-white/5 transition-colors">
+                      <div class="flex items-center gap-3">
+                        <div class="w-7 h-7 rounded-lg bg-pink-500/10 text-pink-600 dark:text-pink-400 flex items-center justify-center">
+                          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                          </svg>
+                        </div>
+                        <div class="flex flex-col">
+                          <span class="text-xs font-semibold text-neutral-900 dark:text-neutral-100 group-hover/sol:text-pink-600 dark:group-hover/sol:text-pink-400 transition-colors whitespace-nowrap">NextGen Commerce</span>
+                          <span class="text-[10px] text-neutral-500 dark:text-neutral-400">Headless storefronts with instant edge cache.</span>
+                        </div>
+                      </div>
+                      <svg class="w-3.5 h-3.5 text-neutral-400 group-hover/sol:text-neutral-900 dark:group-hover/sol:text-white group-hover/sol:translate-x-1 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+
+                <!-- Right: Metrics / Proof (5 Cols) -->
+                <div class="col-span-5 rounded-xl bg-gradient-to-br from-emerald-500/10 via-neutral-100 to-transparent dark:from-emerald-500/10 dark:via-white/[0.04] dark:to-transparent border border-emerald-500/20 p-4 flex flex-col justify-between">
+                  <div>
+                    <span class="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider block mb-1">Production Benchmark</span>
+                    <div class="text-2xl font-bold text-neutral-900 dark:text-white tracking-tight">99.999%</div>
+                    <span class="text-[11px] text-neutral-500 dark:text-neutral-400 block mt-0.5">Uptime SLA guaranteed across 48 worldwide edge points.</span>
+                  </div>
+                  <div class="mt-4 pt-3 border-t border-neutral-200/80 dark:border-white/10 flex items-center justify-between">
+                    <span class="text-[10px] text-neutral-500 dark:text-neutral-400">Latency: <strong>&lt; 8ms</strong></span>
+                    <span class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 dark:hover:text-emerald-300 cursor-pointer">Live Status &rarr;</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. RESOURCES SECTION -->
+            <div id="section-resources" class="dropdown-section absolute inset-0 p-6 opacity-0 pointer-events-none">
+              <div class="flex flex-col justify-between h-full">
+                <div class="flex items-center justify-between pb-3 border-b border-neutral-200/80 dark:border-white/10 mb-2">
+                  <span class="text-[11px] font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider whitespace-nowrap">Documentation & Community</span>
+                  <span class="text-[11px] font-medium text-purple-600 dark:text-purple-400 hover:text-purple-500 dark:hover:text-purple-300 cursor-pointer whitespace-nowrap">All Docs &rarr;</span>
+                </div>
+
+                <div class="grid grid-cols-3 gap-3">
+                  <!-- Col 1 -->
+                  <a href="#" class="group/res p-3 rounded-xl bg-neutral-100 dark:bg-white/[0.03] hover:bg-neutral-200/70 dark:hover:bg-white/[0.07] border border-neutral-200 dark:border-white/5 transition-all flex flex-col justify-between">
+                    <div>
+                      <div class="w-7 h-7 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center mb-2">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        </svg>
+                      </div>
+                      <span class="text-xs font-semibold text-neutral-900 dark:text-neutral-100 group-hover/res:text-purple-600 dark:group-hover/res:text-purple-400 transition-colors block">API Guides</span>
+                      <p class="text-[10px] text-neutral-500 dark:text-neutral-400 mt-1">REST, GraphQL & gRPC endpoint specs.</p>
+                    </div>
+                    <span class="text-[10px] text-purple-600 dark:text-purple-400 mt-3 font-medium">Read guides &rarr;</span>
+                  </a>
+
+                  <!-- Col 2 -->
+                  <a href="#" class="group/res p-3 rounded-xl bg-neutral-100 dark:bg-white/[0.03] hover:bg-neutral-200/70 dark:hover:bg-white/[0.07] border border-neutral-200 dark:border-white/5 transition-all flex flex-col justify-between">
+                    <div>
+                      <div class="w-7 h-7 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-2">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                        </svg>
+                      </div>
+                      <span class="text-xs font-semibold text-neutral-900 dark:text-neutral-100 group-hover/res:text-indigo-600 dark:group-hover/res:text-indigo-400 transition-colors block">UI Components</span>
+                      <p class="text-[10px] text-neutral-500 dark:text-neutral-400 mt-1">Prebuilt Tailwind & Framer Motion kits.</p>
+                    </div>
+                    <span class="text-[10px] text-indigo-600 dark:text-indigo-400 mt-3 font-medium">Browse kits &rarr;</span>
+                  </a>
+
+                  <!-- Col 3 -->
+                  <a href="#" class="group/res p-3 rounded-xl bg-neutral-100 dark:bg-white/[0.03] hover:bg-neutral-200/70 dark:hover:bg-white/[0.07] border border-neutral-200 dark:border-white/5 transition-all flex flex-col justify-between">
+                    <div>
+                      <div class="w-7 h-7 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-2">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/>
+                        </svg>
+                      </div>
+                      <span class="text-xs font-semibold text-neutral-900 dark:text-neutral-100 group-hover/res:text-blue-600 dark:group-hover/res:text-blue-400 transition-colors block">Discord Club</span>
+                      <p class="text-[10px] text-neutral-500 dark:text-neutral-400 mt-1">Connect with 12k+ frontend engineers.</p>
+                    </div>
+                    <span class="text-[10px] text-blue-600 dark:text-blue-400 mt-3 font-medium">Join chat &rarr;</span>
+                  </a>
+                </div>
+
+                <div class="pt-3 border-t border-neutral-200/80 dark:border-white/10 flex items-center justify-between text-[11px] text-neutral-500 dark:text-neutral-400">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span>All services operational</span>
+                  </div>
+                  <a href="https://github.com/IBahaaaldin" target="_blank" class="text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white font-medium flex items-center gap-1">
+                    <span>GitHub @IBahaaaldin</span> &rarr;
+                  </a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- MOBILE NAVBAR & TRIGGER -->
+    <header class="md:hidden w-full max-w-sm flex items-center justify-between px-4 py-2.5 rounded-full border border-neutral-200/80 dark:border-white/10 bg-white/90 dark:bg-neutral-950/80 backdrop-blur-2xl shadow-xl z-50">
+      <!-- Brand -->
+      <a href="#home" class="flex items-center gap-2 whitespace-nowrap">
+        <div class="w-7 h-7 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 p-[1.5px]">
+          <div class="w-full h-full rounded-full bg-white dark:bg-neutral-950 flex items-center justify-center">
+            <span class="text-[10px] font-bold text-neutral-900 dark:text-white">BM</span>
+          </div>
+        </div>
+        <div class="flex flex-col text-left">
+          <span class="text-xs font-semibold text-neutral-900 dark:text-white whitespace-nowrap">Bahaa Mohammed</span>
+          <span class="text-[9px] text-neutral-500 dark:text-neutral-400 whitespace-nowrap">Senior Frontend</span>
+        </div>
+      </a>
+
+      <!-- Right mobile buttons -->
+      <div class="flex items-center gap-1.5">
+        <!-- Theme toggle mobile -->
+        <button id="mobileThemeToggle" class="p-2 rounded-full text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white" title="Toggle Theme">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <circle cx="12" cy="12" r="5" stroke-width="2"></circle>
+            <line x1="12" y1="1" x2="12" y2="3" stroke-width="2" stroke-linecap="round"></line>
+            <line x1="12" y1="21" x2="12" y2="23" stroke-width="2" stroke-linecap="round"></line>
+            <line x1="1" y1="12" x2="3" y2="12" stroke-width="2" stroke-linecap="round"></line>
+            <line x1="21" y1="12" x2="23" y2="12" stroke-width="2" stroke-linecap="round"></line>
+          </svg>
+        </button>
+
+        <!-- Hamburger button -->
+        <button id="mobileMenuBtn" class="p-2 rounded-full text-neutral-700 dark:text-neutral-300 hover:text-neutral-950 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-white/5 active:scale-95 transition-all">
+          <svg id="hamburgerIcon" class="w-5 h-5 block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+          <svg id="closeIcon" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+  </div>
+
+  <!-- MOBILE BACKDROP OVERLAY -->
+  <div id="mobileBackdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+  <!-- MOBILE SLIDE-IN SIDEBAR SHEET -->
+  <aside id="mobileSidebar" class="fixed inset-y-0 right-0 w-80 max-w-[85vw] bg-neutral-950/95 dark:bg-neutral-950/95 backdrop-blur-2xl border-l border-white/10 shadow-2xl z-50 flex flex-col justify-between p-6 transform translate-x-full transition-transform duration-300 ease-out overflow-y-auto">
+    <div>
+      <!-- Sidebar Header -->
+      <div class="flex items-center justify-between pb-5 border-b border-white/10">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 p-[1.5px] flex-shrink-0">
+            <div class="w-full h-full rounded-full bg-neutral-900 flex items-center justify-center">
+              <span class="text-xs font-bold text-white">BM</span>
+            </div>
+          </div>
+          <div class="flex flex-col text-left leading-tight">
+            <span class="text-xs font-semibold text-white whitespace-nowrap">Bahaa Mohammed</span>
+            <span class="text-[10px] text-neutral-400 whitespace-nowrap">Senior Frontend</span>
+          </div>
+        </div>
+        <!-- Close Button -->
+        <button id="closeSidebarBtn" class="p-2 rounded-full text-neutral-400 hover:text-white hover:bg-white/10 active:scale-95 transition-all" aria-label="Close Sidebar">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Sidebar Navigation Sections -->
+      <div class="mt-6 space-y-5">
+        <!-- Products Section -->
+        <div>
+          <div class="text-[11px] font-mono uppercase tracking-wider text-neutral-400 mb-2 flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
+            Products
+          </div>
+          <div class="space-y-1 pl-3.5 border-l border-white/10">
+            <a href="#products" class="sidebar-link flex items-center justify-between py-2 text-xs font-medium text-neutral-300 hover:text-white transition-colors">
+              <span>Edge AI Engine</span>
+              <span class="text-[10px] text-indigo-400 font-mono">v4.2</span>
+            </a>
+            <a href="#products" class="sidebar-link flex items-center justify-between py-2 text-xs font-medium text-neutral-300 hover:text-white transition-colors">
+              <span>Vector Mesh DB</span>
+              <span class="text-[10px] text-indigo-400 font-mono">Fast</span>
+            </a>
+            <a href="#products" class="sidebar-link flex items-center justify-between py-2 text-xs font-medium text-neutral-300 hover:text-white transition-colors">
+              <span>Zero-Trust Auth</span>
+              <span class="text-[10px] text-neutral-400 font-mono">SOC2</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Solutions Section -->
+        <div>
+          <div class="text-[11px] font-mono uppercase tracking-wider text-neutral-400 mb-2 flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            Solutions
+          </div>
+          <div class="space-y-1 pl-3.5 border-l border-white/10">
+            <a href="#solutions" class="sidebar-link flex items-center justify-between py-2 text-xs font-medium text-neutral-300 hover:text-white transition-colors">
+              <span>Fintech & Payments</span>
+              <span class="text-[10px] text-emerald-400 font-mono">99.999%</span>
+            </a>
+            <a href="#solutions" class="sidebar-link flex items-center justify-between py-2 text-xs font-medium text-neutral-300 hover:text-white transition-colors">
+              <span>Autonomous AI Agents</span>
+              <span class="text-[10px] text-emerald-400 font-mono">Live</span>
+            </a>
+            <a href="#solutions" class="sidebar-link flex items-center justify-between py-2 text-xs font-medium text-neutral-300 hover:text-white transition-colors">
+              <span>NextGen Commerce</span>
+              <span class="text-[10px] text-neutral-400 font-mono">Global</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Resources & Links -->
+        <div>
+          <div class="text-[11px] font-mono uppercase tracking-wider text-neutral-400 mb-2 flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
+            General
+          </div>
+          <div class="space-y-1 pl-3.5 border-l border-white/10">
+            <a href="#resources" class="sidebar-link block py-2 text-xs font-medium text-neutral-300 hover:text-white transition-colors">
+              Resources & Documentation
+            </a>
+            <a href="#pricing" class="sidebar-link block py-2 text-xs font-medium text-neutral-300 hover:text-white transition-colors">
+              Pricing & Enterprise
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar Footer -->
+    <div class="pt-6 border-t border-white/10 space-y-3">
+      <a href="#get-started" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 text-center text-xs font-semibold text-white shadow-lg shadow-indigo-500/25 block">
+        Get Started Free
+      </a>
+      <a href="https://github.com/IBahaaaldin" target="_blank" class="w-full py-2 rounded-xl border border-white/10 text-center text-xs font-medium text-neutral-300 hover:text-white block">
+        GitHub @IBahaaaldin
+      </a>
+    </div>
+  </aside>
+
+  <!-- SCRIPT FOR FLUID MORPHING MOTION & THEME -->
+  <script>
+    const navHeader = document.getElementById('navHeader');
+    const navTabs = document.querySelectorAll('.nav-tab');
+    const dropdownWrapper = document.getElementById('dropdownWrapper');
+    const dropdownContainer = document.getElementById('dropdownContainer');
+    const dropdownArrow = document.getElementById('dropdownArrow');
+    const sections = {
+      products: { el: document.getElementById('section-products'), width: 640, height: 390 },
+      solutions: { el: document.getElementById('section-solutions'), width: 560, height: 325 },
+      resources: { el: document.getElementById('section-resources'), width: 500, height: 355 }
+    };
+
+    let activeTab = null;
+    let hideTimeout = null;
+
+    function openDropdown(tabName, tabElement) {
+      clearTimeout(hideTimeout);
+      const targetConfig = sections[tabName];
+      if (!targetConfig) return;
+
+      const headerRect = navHeader.getBoundingClientRect();
+      const tabRect = tabElement.getBoundingClientRect();
+
+      // Compute horizontal alignment so dropdown centers under active tab, clamped within header bounds
+      const targetWidth = targetConfig.width;
+      const contentHeight = targetConfig.el.scrollHeight;
+      const targetHeight = Math.max(targetConfig.height, contentHeight + 28);
+
+      // Position center of dropdown under center of tab
+      const tabCenterX = (tabRect.left + tabRect.width / 2) - headerRect.left;
+      let dropdownX = tabCenterX - targetWidth / 2;
+
+      // Clamp so it doesn't overflow left or right
+      const minX = -40;
+      const maxX = headerRect.width + 40 - targetWidth;
+      if (dropdownX < minX) dropdownX = minX;
+      if (dropdownX > maxX) dropdownX = maxX;
+
+      // Position arrow exactly at center of tab relative to dropdownContainer
+      const arrowX = tabCenterX - dropdownX;
+
+      // Apply morphing styles to container
+      dropdownContainer.style.width = targetWidth + 'px';
+      dropdownContainer.style.height = targetHeight + 'px';
+      dropdownWrapper.style.transform = `translateX(${dropdownX}px)`;
+      dropdownArrow.style.transform = `translateX(${arrowX - 6}px) rotate(45deg)`;
+
+      // Fade in wrapper
+      dropdownWrapper.classList.remove('opacity-0', 'pointer-events-none');
+      dropdownWrapper.classList.add('opacity-100');
+
+      // Cross-fade internal tab sections
+      Object.keys(sections).forEach(key => {
+        const item = sections[key];
+        if (key === tabName) {
+          item.el.classList.remove('opacity-0', 'pointer-events-none');
+          item.el.classList.add('opacity-100');
+          item.el.style.transform = 'translateX(0)';
+        } else {
+          item.el.classList.add('opacity-0', 'pointer-events-none');
+          item.el.classList.remove('opacity-100');
+          item.el.style.transform = key < tabName ? 'translateX(-15px)' : 'translateX(15px)';
+        }
+      });
+
+      activeTab = tabName;
+    }
+
+    function closeDropdown() {
+      hideTimeout = setTimeout(() => {
+        dropdownWrapper.classList.remove('opacity-100');
+        dropdownWrapper.classList.add('opacity-0', 'pointer-events-none');
+        activeTab = null;
+      }, 150);
+    }
+
+    // Attach hover listeners to desktop tabs
+    navTabs.forEach(tab => {
+      const tabName = tab.getAttribute('data-tab');
+      tab.addEventListener('mouseenter', () => openDropdown(tabName, tab));
+      tab.addEventListener('focus', () => openDropdown(tabName, tab));
+    });
+
+    // Keep dropdown open when hovering over the dropdown window
+    dropdownContainer.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+    dropdownContainer.addEventListener('mouseleave', closeDropdown);
+    navHeader.addEventListener('mouseleave', closeDropdown);
+
+    // ==========================================
+    // THEME SWITCHER (Dark <-> Light Mode)
+    // ==========================================
+    const themeToggle = document.getElementById('themeToggle');
+    const mobileThemeToggle = document.getElementById('mobileThemeToggle');
+    const sunIcon = document.getElementById('sunIcon');
+    const moonIcon = document.getElementById('moonIcon');
+    const body = document.body;
+    let isDark = true;
+
+    function applyTheme(dark) {
+      isDark = dark;
+      if (dark) {
+        document.documentElement.classList.add('dark');
+        body.classList.remove('bg-white', 'text-neutral-900');
+        body.classList.add('bg-black', 'text-white');
+        sunIcon.classList.remove('hidden');
+        moonIcon.classList.add('hidden');
+      } else {
+        document.documentElement.classList.remove('dark');
+        body.classList.remove('bg-black', 'text-white');
+        body.classList.add('bg-white', 'text-neutral-900');
+        sunIcon.classList.add('hidden');
+        moonIcon.classList.remove('hidden');
+      }
+    }
+
+    themeToggle?.addEventListener('click', () => applyTheme(!isDark));
+    mobileThemeToggle?.addEventListener('click', () => applyTheme(!isDark));
+
+    // ==========================================
+    // MOBILE SLIDE-IN SIDEBAR
+    // ==========================================
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+    const mobileBackdrop = document.getElementById('mobileBackdrop');
+    const mobileSidebar = document.getElementById('mobileSidebar');
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+
+    function openMobileSidebar() {
+      mobileBackdrop.classList.remove('opacity-0', 'pointer-events-none');
+      mobileBackdrop.classList.add('opacity-100', 'pointer-events-auto');
+      mobileSidebar.classList.remove('translate-x-full');
+      mobileSidebar.classList.add('translate-x-0');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMobileSidebar() {
+      mobileBackdrop.classList.add('opacity-0', 'pointer-events-none');
+      mobileBackdrop.classList.remove('opacity-100', 'pointer-events-auto');
+      mobileSidebar.classList.add('translate-x-full');
+      mobileSidebar.classList.remove('translate-x-0');
+      document.body.style.overflow = '';
+    }
+
+    mobileMenuBtn?.addEventListener('click', openMobileSidebar);
+    closeSidebarBtn?.addEventListener('click', closeMobileSidebar);
+    mobileBackdrop?.addEventListener('click', closeMobileSidebar);
+    sidebarLinks.forEach(link => link.addEventListener('click', closeMobileSidebar));
+  </script>
+</body>
+</html>
